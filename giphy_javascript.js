@@ -1,12 +1,14 @@
+//step 1: create an array
 var pokemonArray = ["bulbasaur", "charmander", "squirtle", "pikachu", "horsea", "magikarp"];
 // console.log(pokemonArray);
 
-function pokemonAlert() {
-	var pokemonName = $(this).attr("data-name");
-	alert(pokemonName);
-}
+// pseudo step 3: just testing to make sure the buttons work
+// function pokemonAlert() {
+// 	var pokemonName = $(this).attr("data-name");
+// 	alert(pokemonName);
+// }
 
-//display pokemonArray objects in buttons
+//step 2a: display pokemonArray objects in buttons
 function renderButtons() {
 	$("#pokemonBtn").empty();
 	for(var i=0;i<pokemonArray.length; i++){
@@ -18,7 +20,7 @@ function renderButtons() {
 	}
 }
 
-//allows new pokemon buttons to be created and added
+//step ??:allows new pokemon buttons to be created and added
 $("#add_pokemon").on("click", function(event){
 	event.preventDefault();
 	var newPokemon = $("#pokemon").val().trim();
@@ -26,6 +28,31 @@ $("#add_pokemon").on("click", function(event){
 	renderButtons();
 })
 
-$(document).on("click", ".pokemon", pokemonAlert)
+// click function for pseudo step 3
+// $(document).on("click", ".pokemon", pokemonAlert)
 
+//step 3: getting button to grab images & display them
+$(document).on("click", ".pokemon", function(){
+	var pokemonName = $(this).attr("data-name");
+	var queryURl= "http://api.giphy.com/v1/gifs/search?q="+pokemonName+"&api_key=dc6zaTOxFJmzC&limit=10";
+
+	$.ajax({
+		url: queryURl,
+		method: "GET"
+	}).done(function(response){
+		console.log(queryURl);
+		console.log(response);
+	
+	var results = response.data;
+	for (var a=0; a < results.length; a++){
+		var pokemonDiv = $("<div>");
+		var p = $("<p>").text("Rating: " + results[a].rating);
+		var pokemonImage = $("<img>");
+		pokemonImage.attr("src", results[a].images.fixed_height.url);
+		pokemonImage.append(p);
+		pokemonImage.append(pokemonImage);
+		$("#gifs-appear-here").prepend(pokemonDiv);
+	}
+	});
+})
 renderButtons();
