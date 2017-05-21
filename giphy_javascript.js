@@ -31,7 +31,7 @@ $("#add_pokemon").on("click", function(event){
 // click function for pseudo step 3
 // $(document).on("click", ".pokemon", pokemonAlert)
 
-//step 3: getting button to grab images & display them
+//step 3a: getting button to grab images 
 $(document).on("click", ".pokemon", function(){
 	var pokemonName = $(this).attr("data-name");
 	var queryURl= "http://api.giphy.com/v1/gifs/search?q="+pokemonName+"&api_key=dc6zaTOxFJmzC&limit=10";
@@ -42,17 +42,18 @@ $(document).on("click", ".pokemon", function(){
 	}).done(function(response){
 		console.log(queryURl);
 		console.log(response);
-	
-	var results = response.data;
-	for (var a=0; a < results.length; a++){
-		var pokemonDiv = $("<div>");
-		var p = $("<p>").text("Rating: " + results[a].rating);
-		var pokemonImage = $("<img>");
-		pokemonImage.attr("src", results[a].images.fixed_height.url);
-		pokemonImage.append(p);
-		pokemonImage.append(pokemonImage);
-		$("#gifs-appear-here").prepend(pokemonDiv);
-	}
+
+//step 3b: displaying grabbed gifs & ratings
+		var results = response.data;
+		for (var a=0; a < results.length; a++){
+			var pokemonDiv = $("<div>");
+			var p = $("<p>").text("Rating: " + results[a].rating);
+			var pokemonImage = $("<img>");
+			pokemonImage.attr("src", results[a].images.fixed_height.url);
+			pokemonDiv.append(p);
+			pokemonDiv.append(pokemonImage);
+			$("#gifs-appear-here").prepend(pokemonDiv);
+		}
 	});
 })
 renderButtons();
